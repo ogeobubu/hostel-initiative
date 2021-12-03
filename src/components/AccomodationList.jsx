@@ -1,0 +1,57 @@
+import styled from "styled-components";
+import AccomodationItem from "./AccomdationItem";
+import Button from "./Button";
+import image1 from "../assets/image1.png";
+import image2 from "../assets/image2.png";
+import image3 from "../assets/image3.png";
+import darkRight from "../assets/darkRight.png";
+import { mobile } from "../responsive.js";
+
+const Section = styled.section`
+  margin-top: 40px;
+  display: flex;
+  margin-left: 5rem;
+  margin-bottom: 41px;
+  ${mobile({
+    marginLeft: 0,
+  })};
+`;
+
+const data = [
+  {
+    id: 1,
+    image: image1,
+    name: "Single Room at Damico",
+    location: "12, Harakiri, Damico Estate, Ile-ife",
+    price: "80,000",
+  },
+  {
+    id: 2,
+    image: image2,
+    name: "Single Room at Damico",
+    location: "12, Harakiri, Damico Estate, Ile-ife",
+    price: "80,000",
+  },
+  {
+    id: 3,
+    image: image3,
+    name: "Single Room at Damico",
+    location: "12, Harakiri, Damico Estate, Ile-ife",
+    price: "80,000",
+  },
+];
+
+const AccomodationList = () => {
+  return (
+    <>
+      <Section>
+        {data.map((item) => (
+          <AccomodationItem key={item.id} item={item} />
+        ))}
+      </Section>
+      <Button market="true" text="Go to Marketplace" arrowRight={darkRight} />
+    </>
+  );
+};
+
+export default AccomodationList;
