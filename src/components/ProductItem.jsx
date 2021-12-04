@@ -132,14 +132,46 @@ const Date = styled.p`
 
 const Photos = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 10px;
+  align-items: start;
+  justify-items: center;
+  margin: auto;
+  width: 100%;
   margin-top: 37px;
   margin-bottom: 61px;
 `;
 const Photo = styled.img`
-  width: 100%;
-  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+  max-width: 100%;
+
+  &:nth-child(1) {
+    grid-column: span 6;
+    grid-row: span 2;
+    align-self: stretch;
+  }
+
+  &:nth-child(2) {
+    grid-column: span 4;
+  }
+
+  &:nth-child(3) {
+    grid-column: span 4;
+  }
+
+  &:nth-child(4) {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  &:nth-child(5) {
+    grid-column: span 2;
+  }
+
+  &:nth-child(6) {
+    grid-column: span 2;
+  }
 `;
 const AccoHead = styled.div`
   display: flex;
