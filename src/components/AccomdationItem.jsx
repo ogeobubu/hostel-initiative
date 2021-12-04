@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import location from "../assets/location.png";
 import Button from "./Button";
 import { mobile } from "../responsive.js";
@@ -85,7 +86,9 @@ const AccomodationItem = ({ item, market }) => {
           <Price>
             NGN{item.price} <Span>/yr</Span>
           </Price>
-          <Button text="View" item="true" />
+          <Link className="link" to="/product">
+            <Button text="View" item="true" />
+          </Link>
         </Flex>
       </Container>
     </Item>

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import Button from "./Button";
 import hero from "../assets/hero.png";
 import { aboutResponsive, tablet, mobile } from "../responsive.js";
@@ -66,7 +67,10 @@ const Hero = () => {
         <Left>
           <Text>Connecting you with the right accomodation in Ile-ife</Text>
           <Flex>
-            <Button text="Go to Marketplace" />
+            <Link className="link" to="/market">
+              <Button text="Go to Marketplace" />
+            </Link>
+
             <Button text="Learn More" outline="true" responsive="true" />
           </Flex>
         </Left>

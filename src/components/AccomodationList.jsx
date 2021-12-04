@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import AccomodationItem from "./AccomdationItem";
 import Button from "./Button";
 import image1 from "../assets/image1.png";
@@ -49,7 +50,9 @@ const AccomodationList = () => {
           <AccomodationItem key={item.id} item={item} />
         ))}
       </Section>
-      <Button market="true" text="Go to Marketplace" arrowRight={darkRight} />
+      <Link className="link" to="/market">
+        <Button market="true" text="Go to Marketplace" arrowRight={darkRight} />
+      </Link>
     </>
   );
 };

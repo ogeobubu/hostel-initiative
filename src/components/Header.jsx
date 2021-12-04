@@ -1,4 +1,5 @@
 import logo from "../assets/logo.png";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { aboutResponsive, tablet } from "../responsive.js";
 
@@ -37,6 +38,7 @@ const NavItem = styled.li`
   line-height: 17px;
   color: #3a3b7b;
   margin-right: 34px;
+  cursor: pointer;
 `;
 // const MobileNav = styled.div`
 //   display: none;
@@ -49,18 +51,22 @@ const navData = [
   {
     id: 1,
     name: "Home",
+    link: "/",
   },
   {
     id: 2,
     name: "Marketplace",
+    link: "/market",
   },
   {
     id: 3,
     name: "About us",
+    link: "/",
   },
   {
     id: 4,
     name: "Contact us",
+    link: "/",
   },
 ];
 
@@ -68,12 +74,15 @@ const Header = () => {
   return (
     <HeaderSection>
       <Container>
-        <Logo src={logo} alt="logo" />
-
+        <Link to="/" className="link">
+          <Logo src={logo} alt="logo" />
+        </Link>
         <Nav>
           <NavList>
-            {navData.map(({ id, name }) => (
-              <NavItem key={id}>{name}</NavItem>
+            {navData.map(({ id, name, link }) => (
+              <Link key={id} className="link" to={link}>
+                <NavItem>{name}</NavItem>
+              </Link>
             ))}
           </NavList>
         </Nav>

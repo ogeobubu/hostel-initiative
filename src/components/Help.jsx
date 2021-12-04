@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import Button from "./Button";
 import help from "../assets/help.png";
 import { aboutResponsive, tablet, mobile } from "../responsive.js";
@@ -64,7 +65,9 @@ const Help = () => {
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </Text>
-        <Button text="Go to Marketplace" />
+        <Link className="link" to="/market">
+          <Button text="Go to Marketplace" />
+        </Link>
       </Container>
     </Section>
   );
