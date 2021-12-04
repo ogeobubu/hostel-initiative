@@ -38,6 +38,12 @@ const NavItem = styled.li`
   color: #3a3b7b;
   margin-right: 34px;
 `;
+const MobileNav = styled.div`
+  display: none;
+  ${tablet({
+    display: "block",
+  })}
+`;
 
 const navData = [
   {
