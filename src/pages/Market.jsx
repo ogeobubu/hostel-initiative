@@ -5,7 +5,6 @@ import { aboutResponsive, tablet, mobile } from "../responsive.js";
 import image1 from "../assets/image1.png";
 import image2 from "../assets/image2.png";
 import image3 from "../assets/image3.png";
-import darkRight from "../assets/darkRight.png";
 import AccomodationItem from "../components/AccomdationItem";
 
 const SectionMarket = styled.section`

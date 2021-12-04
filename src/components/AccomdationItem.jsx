@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import image1 from "../assets/image1.png";
 import location from "../assets/location.png";
 import Button from "./Button";
 import { mobile } from "../responsive.js";
