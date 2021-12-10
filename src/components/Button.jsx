@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import WindowSize from "../hooks/windowSize";
+
 const Image = styled.img`
   margin-left: 39px;
 `;
@@ -25,7 +27,11 @@ const Buttons = styled.button`
       : "188px"};
   height: ${(props) => (props.item === true ? "26px" : "49px")};
   background: ${(props) =>
-    props.outline === true
+    props.main === true
+      ? "#854BFF"
+      : props.size
+      ? "white"
+      : props.outline
       ? "transparent"
       : props.item === true
       ? "transparent"
@@ -53,13 +59,16 @@ const Buttons = styled.button`
   margin: ${(props) => props.market === true && "0 auto"};
 `;
 
-const Button = ({ text, outline, item, market, arrowRight, responsive }) => {
+const Button = ({ text, outline, item, market, arrowRight, main }) => {
+  const size = WindowSize();
+
   return (
     <Buttons
       market={market ? true : false}
       item={item ? true : false}
       outline={outline ? true : false}
-      responsive={responsive ? true : false}
+      size={size.width}
+      main={main ? true : false}
     >
       {text} {market && <Image src={arrowRight} alt="arrow" />}
     </Buttons>

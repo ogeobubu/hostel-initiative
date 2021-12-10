@@ -145,7 +145,7 @@ const Footer = () => {
         <Right>
           <News>Our Newsletter</News>
           <Input placeholder="Email Address" />
-          <Button text="Subscribe to newsletter" footer="true" />
+          <Button main="true" text="Subscribe to newsletter" footer="true" />
         </Right>
       </Container>
 

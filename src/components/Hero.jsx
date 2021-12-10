@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "./Button";
 import hero from "../assets/hero.png";
 import { aboutResponsive, tablet, mobile } from "../responsive.js";
+import WindowSize from "../hooks/windowSize";
 
 const HeroSection = styled.section`
   overflow-x: hidden;
@@ -58,20 +59,24 @@ const Image = styled.img`
 `;
 const Flex = styled.div`
   display: flex;
+  flex-direction: ${(props) => props.size && "column"};
 `;
 
 const Hero = () => {
+  const size = WindowSize();
+
   return (
     <HeroSection>
       <Container>
         <Left>
           <Text>Connecting you with the right accomodation in Ile-ife</Text>
-          <Flex>
+          <Flex size={size.width < 530}>
             <Link className="link" to="/market">
-              <Button text="Go to Marketplace" />
+              <Button text="Go to Marketplace" main="true" />
             </Link>
-
-            <Button text="Learn More" outline="true" responsive="true" />
+            <Link className="link" to="/signup">
+              <Button text="Become an Agent" size="true" outline="true" />
+            </Link>
           </Flex>
         </Left>
         <Right>

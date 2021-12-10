@@ -139,6 +139,7 @@ const InputContainer = styled.div`
   border-radius: 5px;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
 `;
 const Input = styled.input`
   border: none;
