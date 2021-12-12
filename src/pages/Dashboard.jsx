@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 
 const Section = styled.section`
   background: #e5e5e5;
+  overflow-x: hidden;
 `;
 
 const Flex = styled.div`

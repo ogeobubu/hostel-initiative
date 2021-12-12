@@ -1,10 +1,29 @@
+import { useState } from "react";
 import styled from "styled-components";
+import { Backdrop, Box, Modal, Fade, Typography } from "@mui/material";
 import Button from "../components/Button";
 import deleteBtn from "../assets/fluent_delete-48-filled (1).png";
 import { Menu } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { openNav } from "../redux/navSlice";
 import WindowSize from "../hooks/windowSize";
+import { aboutResponsive, tablet, mobile } from "../responsive.js";
+import { Close } from "@mui/icons-material";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 800,
+  bgcolor: "background.paper",
+  border: "none",
+  boxShadow: 24,
+  p: 3,
+  overflowY: "auto",
+  height: "100%",
+  borderRadius: "10px",
+};
 
 const Section = styled.section`
   padding: 2.0625rem 1.3125rem;
@@ -125,6 +144,10 @@ const LoadMoreButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  ${mobile({
+    width: "100%",
+  })};
 `;
 const CreateButton = styled.button`
   cursor: pointer;
@@ -145,6 +168,117 @@ const TitleMenu = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const TableDiv = styled.div`
+  width: 900px;
+  overflow-x: auto;
+`;
+const Table = styled.table`
+  width: 100%;
+`;
+const Tr = styled.tr`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 43px;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #d7d7d7;
+  border-radius: 3px;
+  padding: 1rem;
+  margin-bottom: 11px;
+`;
+const Td = styled.td``;
+
+const CreateHead = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+`;
+const CreateTitle = styled.p`
+  font-family: Lato;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: 0.01em;
+  color: #854bff;
+`;
+const CreateBody = styled.div``;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+const FormController = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+`;
+const FormLabel = styled.label`
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: #8f8f8f;
+  margin-bottom: 6px;
+`;
+const FormInput = styled.input`
+  outline: none;
+  min-width: 693px;
+  flex: 1;
+  height: 49px;
+  background: #fcfcfc;
+  border: 1px solid #f9f9f9;
+  border-radius: 5px;
+  padding: 1rem;
+
+  &::placeholder {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #d5d5d5;
+  }
+`;
+const FormTextarea = styled.textarea`
+width: 693px;
+height: 153px;#FCFCFC;
+border: 1px solid #F9F9F9;
+border-radius: 5px;
+padding: 1rem;
+outline: none;
+`;
+const FormSubLabel = styled.span`
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #a8a8a8;
+`;
+const FormButton = styled.button`
+  outline: none;
+  cursor: pointer;
+  width: 693px;
+  height: 39px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #854bff;
+  border-radius: 5px;
+  margin-top: 48px;
+  border: none;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #ffffff;
+`;
 const Search = () => {
   return (
     <>
@@ -153,145 +287,176 @@ const Search = () => {
   );
 };
 
+const CreateAccomodation = ({ onClose }) => {
+  return (
+    <>
+      <CreateHead>
+        <CreateTitle>Create Accomodation</CreateTitle>
+        <Close
+          onClick={() => onClose()}
+          style={{ color: "#000", cursor: "pointer" }}
+        />
+      </CreateHead>
+      <CreateBody>
+        <Form>
+          <FormController>
+            <FormLabel>Title</FormLabel>
+            <FormInput placeholder="e.g Single room at damico" type="text" />
+          </FormController>
+
+          <FormController>
+            <FormLabel>Address</FormLabel>
+            <FormInput placeholder="e.g Single room at damico" type="text" />
+          </FormController>
+
+          <FormController>
+            <FormLabel>Price</FormLabel>
+            <FormInput placeholder="e.g Single room at damico" type="text" />
+          </FormController>
+
+          <FormController>
+            <FormLabel>Renewal Period</FormLabel>
+            <FormInput placeholder="e.g Single room at damico" type="text" />
+          </FormController>
+
+          <FormController>
+            <FormLabel>Description</FormLabel>
+            <FormTextarea placeholder="e.g Single room at damico" type="text" />
+          </FormController>
+
+          <FormController>
+            <FormLabel>Features</FormLabel>
+            <FormSubLabel>
+              Separate multiple features by a comma e.g (Electricity, Parking
+              Space, Running Water){" "}
+            </FormSubLabel>
+            <FormInput placeholder="e.g Single room at damico" type="text" />
+          </FormController>
+
+          <FormController>
+            <FormLabel>Images</FormLabel>
+            <FormInput placeholder="e.g Single room at damico" type="text" />
+          </FormController>
+
+          <FormButton>Create Accomodation</FormButton>
+        </Form>
+      </CreateBody>
+    </>
+  );
+};
+
 const Manage = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const size = WindowSize();
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(openNav());
   };
   return (
-    <Section>
-      <Head>
-        <TitleMenu>
-          {size.width < 1045 && (
-            <Menu
-              style={{
-                cursor: "pointer",
-                fontSize: "2rem",
-                marginRight: "1rem",
-              }}
-              onClick={handleClick}
-            />
-          )}
-          <Title>Manage Accomodation</Title>
-        </TitleMenu>
-        <CreateButton>Create New</CreateButton>
-      </Head>
+    <>
+      <Section>
+        <Head>
+          <TitleMenu>
+            {size.width < 1045 && (
+              <Menu
+                style={{
+                  cursor: "pointer",
+                  fontSize: "2rem",
+                  marginRight: "1rem",
+                }}
+                onClick={handleClick}
+              />
+            )}
+            <Title>Manage Accomodation</Title>
+          </TitleMenu>
+          <CreateButton onClick={handleOpen}>Create New</CreateButton>
+        </Head>
 
-      <Search />
+        <Search />
 
-      <AccomodationList>
-        <AccomodationItem>
-          <Left>Single Room at Damico</Left>
-          <Center>12, Harakiri, Damico Estate, Ile-ife</Center>
-          <Right>NGN80,000</Right>
-          <RightEnd>
-            <EditButton>Edit</EditButton>
-            <DeleteButton>
-              <img src={deleteBtn} alt="delete" />
-            </DeleteButton>
-          </RightEnd>
-        </AccomodationItem>
+        <TableDiv>
+          <Table>
+            <Tr>
+              <Td>Single Room at Damico</Td>
+              <Td>12, Harakiri, Damico Estate, Ile-ife</Td>
+              <Td>NGN80,000</Td>
+              <Td>
+                <RightEnd>
+                  <EditButton>Edit</EditButton>
+                  <DeleteButton>
+                    <img src={deleteBtn} alt="delete" />
+                  </DeleteButton>
+                </RightEnd>
+              </Td>
+            </Tr>
 
-        <AccomodationItem>
-          <Left>Single Room at Damico</Left>
-          <Center>12, Harakiri, Damico Estate, Ile-ife</Center>
-          <Right>NGN80,000</Right>
-          <RightEnd>
-            <EditButton>Edit</EditButton>
-            <DeleteButton>
-              <img src={deleteBtn} alt="delete" />
-            </DeleteButton>
-          </RightEnd>
-        </AccomodationItem>
+            <Tr>
+              <Td>Single Room at Damico</Td>
+              <Td>12, Harakiri, Damico Estate, Ile-ife</Td>
+              <Td>NGN80,000</Td>
+              <Td>
+                <RightEnd>
+                  <EditButton>Edit</EditButton>
+                  <DeleteButton>
+                    <img src={deleteBtn} alt="delete" />
+                  </DeleteButton>
+                </RightEnd>
+              </Td>
+            </Tr>
 
-        <AccomodationItem>
-          <Left>Single Room at Damico</Left>
-          <Center>12, Harakiri, Damico Estate, Ile-ife</Center>
-          <Right>NGN80,000</Right>
-          <RightEnd>
-            <EditButton>Edit</EditButton>
-            <DeleteButton>
-              <img src={deleteBtn} alt="delete" />
-            </DeleteButton>
-          </RightEnd>
-        </AccomodationItem>
+            <Tr>
+              <Td>Single Room at Damico</Td>
+              <Td>12, Harakiri, Damico Estate, Ile-ife</Td>
+              <Td>NGN80,000</Td>
+              <Td>
+                <RightEnd>
+                  <EditButton>Edit</EditButton>
+                  <DeleteButton>
+                    <img src={deleteBtn} alt="delete" />
+                  </DeleteButton>
+                </RightEnd>
+              </Td>
+            </Tr>
 
-        <AccomodationItem>
-          <Left>Single Room at Damico</Left>
-          <Center>12, Harakiri, Damico Estate, Ile-ife</Center>
-          <Right>NGN80,000</Right>
-          <RightEnd>
-            <EditButton>Edit</EditButton>
-            <DeleteButton>
-              <img src={deleteBtn} alt="delete" />
-            </DeleteButton>
-          </RightEnd>
-        </AccomodationItem>
+            <Tr>
+              <Td>Single Room at Damico</Td>
+              <Td>12, Harakiri, Damico Estate, Ile-ife</Td>
+              <Td>NGN80,000</Td>
+              <Td>
+                <RightEnd>
+                  <EditButton>Edit</EditButton>
+                  <DeleteButton>
+                    <img src={deleteBtn} alt="delete" />
+                  </DeleteButton>
+                </RightEnd>
+              </Td>
+            </Tr>
+          </Table>
+        </TableDiv>
 
-        <AccomodationItem>
-          <Left>Single Room at Damico</Left>
-          <Center>12, Harakiri, Damico Estate, Ile-ife</Center>
-          <Right>NGN80,000</Right>
-          <RightEnd>
-            <EditButton>Edit</EditButton>
-            <DeleteButton>
-              <img src={deleteBtn} alt="delete" />
-            </DeleteButton>
-          </RightEnd>
-        </AccomodationItem>
+        <LoadMoreButton>Load More</LoadMoreButton>
+      </Section>
 
-        <AccomodationItem>
-          <Left>Single Room at Damico</Left>
-          <Center>12, Harakiri, Damico Estate, Ile-ife</Center>
-          <Right>NGN80,000</Right>
-          <RightEnd>
-            <EditButton>Edit</EditButton>
-            <DeleteButton>
-              <img src={deleteBtn} alt="delete" />
-            </DeleteButton>
-          </RightEnd>
-        </AccomodationItem>
-
-        <AccomodationItem>
-          <Left>Single Room at Damico</Left>
-          <Center>12, Harakiri, Damico Estate, Ile-ife</Center>
-          <Right>NGN80,000</Right>
-          <RightEnd>
-            <EditButton>Edit</EditButton>
-            <DeleteButton>
-              <img src={deleteBtn} alt="delete" />
-            </DeleteButton>
-          </RightEnd>
-        </AccomodationItem>
-
-        <AccomodationItem>
-          <Left>Single Room at Damico</Left>
-          <Center>12, Harakiri, Damico Estate, Ile-ife</Center>
-          <Right>NGN80,000</Right>
-          <RightEnd>
-            <EditButton>Edit</EditButton>
-            <DeleteButton>
-              <img src={deleteBtn} alt="delete" />
-            </DeleteButton>
-          </RightEnd>
-        </AccomodationItem>
-
-        <AccomodationItem>
-          <Left>Single Room at Damico</Left>
-          <Center>12, Harakiri, Damico Estate, Ile-ife</Center>
-          <Right>NGN80,000</Right>
-          <RightEnd>
-            <EditButton>Edit</EditButton>
-            <DeleteButton>
-              <img src={deleteBtn} alt="delete" />
-            </DeleteButton>
-          </RightEnd>
-        </AccomodationItem>
-      </AccomodationList>
-
-      <LoadMoreButton>Load More</LoadMoreButton>
-    </Section>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <CreateAccomodation onClose={handleClose} />
+          </Box>
+        </Fade>
+      </Modal>
+    </>
   );
 };
 
