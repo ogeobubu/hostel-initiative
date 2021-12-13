@@ -1,9 +1,12 @@
+import { useState } from "react";
 import Header from "../components/Header";
 import styled from "styled-components";
 import { aboutResponsive, tablet, mobile } from "../responsive";
-import arrowRight from "../assets/rightArrow.png";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../config";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Section = styled.section``;
 
@@ -145,17 +148,33 @@ const Input = styled.input`
     width: "100%",
   })};
 `;
-const Image = styled.img``;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
 
 const Signin = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const user = await auth.signInWithEmailAndPassword(email, password);
+      console.log(user);
+      toast("You have successfully logged in", { type: "success" });
+      navigate("/dashboard");
+    } catch (error) {
+      toast(error.message, { type: "error" });
+    }
+  };
   return (
     <>
       <Header />
       <Section>
+        <ToastContainer />
+        <ToastContainer />
         <Container>
           <Left>
             <Head>Agent Sign in</Head>
@@ -172,19 +191,25 @@ const Signin = () => {
           </Left>
           <Right>
             <RightContainer>
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <FormGroup>
                   <FormController>
                     <Label>Email Address</Label>
                     <Input
                       type="email"
                       placeholder="e.g - hotelinitiative@gmail.com"
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </FormController>
 
                   <FormController>
                     <Label>Password</Label>
-                    <Input type="password" placeholder="***************" />
+
+                    <Input
+                      type="password"
+                      placeholder="***************"
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
                   </FormController>
                 </FormGroup>
 

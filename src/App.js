@@ -5,7 +5,6 @@ import Market from "./pages/Market";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Dashboard from "./pages/Dashboard";
-import Manage from "./pages/Manage";
 
 function App() {
   return (

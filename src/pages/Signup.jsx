@@ -1,9 +1,12 @@
+import { useState } from "react";
 import Header from "../components/Header";
 import styled from "styled-components";
 import { aboutResponsive, tablet, mobile } from "../responsive";
-import arrowRight from "../assets/rightArrow.png";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { auth, database } from "../config";
 
 const Section = styled.section``;
 
@@ -142,17 +145,47 @@ const Input = styled.input`
     width: "100%",
   })};
 `;
-const Image = styled.img``;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
 
 const Signup = () => {
+  const [fullName, setFullName] = useState("");
+  const [agencyName, setAgencyName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [office, setOffice] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await auth.createUserWithEmailAndPassword(email, password);
+      const user = await res.user;
+      await database.collection("users").add({
+        uid: user.uid,
+        fullName,
+        agencyName,
+        email,
+        phone,
+        office,
+        authProvider: "local",
+      });
+      toast("You have successfully created an account", { type: "success" });
+      navigate("/signin");
+    } catch (error) {
+      toast(error.message, { type: "error" });
+    }
+  };
   return (
     <>
       <Header />
       <Section>
+        <ToastContainer />
+        <ToastContainer />
         <Container>
           <Left>
             <Head>Agent Registration</Head>
@@ -169,16 +202,24 @@ const Signup = () => {
           </Left>
           <Right>
             <RightContainer>
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <FormGroup>
                   <FormController>
                     <Label>Full Name</Label>
-                    <Input type="text" placeholder="e.g Oge Obubu" />
+                    <Input
+                      type="text"
+                      placeholder="e.g Oge Obubu"
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
                   </FormController>
 
                   <FormController>
                     <Label>Agency Name</Label>
-                    <Input type="text" placeholder="e.g Hotel Initiative" />
+                    <Input
+                      type="text"
+                      placeholder="e.g Hotel Initiative"
+                      onChange={(e) => setAgencyName(e.target.value)}
+                    />
                   </FormController>
 
                   <FormController>
@@ -186,12 +227,17 @@ const Signup = () => {
                     <Input
                       type="email"
                       placeholder="e.g - hotelinitiative@gmail.com"
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </FormController>
 
                   <FormController>
                     <Label>Phone Number</Label>
-                    <Input type="text" placeholder="e.g - +2349012345678" />
+                    <Input
+                      type="text"
+                      placeholder="e.g - +2349012345678"
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
                   </FormController>
 
                   <FormController>
@@ -199,17 +245,22 @@ const Signup = () => {
                     <Input
                       type="text"
                       placeholder="e.g - No. 32, Lagere, Ile-ife"
+                      onChange={(e) => setOffice(e.target.value)}
                     />
                   </FormController>
 
                   <FormController>
                     <Label>Password</Label>
-                    <Input type="password" placeholder="***************" />
+                    <Input
+                      type="password"
+                      placeholder="***************"
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
                   </FormController>
                 </FormGroup>
 
                 <ButtonContainer>
-                  <Button text="Register" main="true" />
+                  <Button text="Register" main="true" type="submit" />
                 </ButtonContainer>
               </Form>
             </RightContainer>

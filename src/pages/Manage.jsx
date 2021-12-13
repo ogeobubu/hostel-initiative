@@ -1,13 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Backdrop, Box, Modal, Fade, Typography } from "@mui/material";
-import Button from "../components/Button";
+import { Backdrop, Box, Modal, Fade } from "@mui/material";
 import deleteBtn from "../assets/fluent_delete-48-filled (1).png";
 import { Menu } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { openNav } from "../redux/navSlice";
 import WindowSize from "../hooks/windowSize";
-import { aboutResponsive, tablet, mobile } from "../responsive.js";
+import { tablet, mobile } from "../responsive.js";
 import { Close } from "@mui/icons-material";
 
 const style = {
@@ -54,48 +53,6 @@ const SearchInput = styled.input`
   outline: none;
   margin-top: 14px;
   margin-bottom: 29px;
-`;
-
-const AccomodationList = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const AccomodationItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 43px;
-  width: 100%;
-  background: #ffffff;
-  border: 1px solid #d7d7d7;
-  border-radius: 3px;
-  padding: 1rem;
-  margin-bottom: 11px;
-`;
-const Left = styled.h3`
-  font-family: Lato;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 179%;
-  color: #3a3b7b;
-`;
-const Center = styled.p`
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 14px;
-  color: #7a7a7a;
-`;
-const Right = styled.p`
-  font-family: Lato;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 19px;
-  letter-spacing: 0.02em;
-  color: #7c7c7c;
 `;
 const RightEnd = styled.div`
   display: flex;
@@ -233,6 +190,9 @@ const FormInput = styled.input`
   border: 1px solid #f9f9f9;
   border-radius: 5px;
   padding: 1rem;
+  ${tablet({
+    minWidth: "100%",
+  })};
 
   &::placeholder {
     font-family: Lato;
@@ -250,6 +210,9 @@ border: 1px solid #F9F9F9;
 border-radius: 5px;
 padding: 1rem;
 outline: none;
+${tablet({
+  width: "100%",
+})};
 `;
 const FormSubLabel = styled.span`
   font-family: Lato;
@@ -278,6 +241,10 @@ const FormButton = styled.button`
   font-size: 14px;
   line-height: 17px;
   color: #ffffff;
+
+  ${tablet({
+    width: "100%",
+  })};
 `;
 const Search = () => {
   return (
@@ -451,7 +418,12 @@ const Manage = () => {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box
+            sx={{
+              ...style,
+              width: size.width > 800 ? 800 : size.width,
+            }}
+          >
             <CreateAccomodation onClose={handleClose} />
           </Box>
         </Fade>

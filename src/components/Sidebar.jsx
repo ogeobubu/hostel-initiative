@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import logo from "../assets/logo.png";
+import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Close } from "@mui/icons-material";
 import { openNav } from "../redux/navSlice";
@@ -124,11 +125,38 @@ const Sidebar = () => {
 
         <SidebarNav>
           <NavItems>
-            <NavItem>Dashboard</NavItem>
+            <NavLink
+              style={({ isActive }) => ({
+                color: isActive && "#854BFF",
+                fontWeight: "bold",
+              })}
+              to="/dashboard"
+              className="link"
+            >
+              <NavItem>Dashboard</NavItem>
+            </NavLink>
 
-            <NavItem active>Manage Accomodation</NavItem>
+            <NavLink
+              style={({ isActive }) => ({
+                color: isActive && "#854BFF",
+                fontWeight: "bold",
+              })}
+              to="/dashboard/manage"
+              className="link"
+            >
+              <NavItem>Manage Accomodation</NavItem>
+            </NavLink>
 
-            <NavItem>Account</NavItem>
+            <NavLink
+              style={({ isActive }) => ({
+                color: isActive && "#854BFF",
+                fontWeight: "bold",
+              })}
+              to="/dashboard/account"
+              className="link"
+            >
+              <NavItem>Account</NavItem>
+            </NavLink>
           </NavItems>
         </SidebarNav>
 
