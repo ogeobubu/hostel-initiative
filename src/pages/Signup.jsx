@@ -165,14 +165,13 @@ const Signup = () => {
     try {
       const res = await auth.createUserWithEmailAndPassword(email, password);
       const user = await res.user;
-      await database.collection("users").add({
+      await database.ref("users/" + user.uid).set({
         uid: user.uid,
         fullName,
         agencyName,
         email,
         phone,
         office,
-        authProvider: "local",
       });
       toast("You have successfully created an account", { type: "success" });
       navigate("/signin");

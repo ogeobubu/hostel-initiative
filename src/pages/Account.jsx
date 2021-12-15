@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import myProfilePic from "../assets/myProfilePic.png";
 import { Edit, Menu } from "@mui/icons-material";
@@ -6,6 +6,9 @@ import { aboutResponsive, tablet, mobile, largeTablet } from "../responsive.js";
 import { useDispatch } from "react-redux";
 import { openNav } from "../redux/navSlice";
 import WindowSize from "../hooks/windowSize";
+import firebase from "firebase";
+import useFirestore from "../hooks/useFirestore";
+import { useSelector } from "react-redux";
 
 const Section = styled.section`
   padding: 2.0625rem 1.3125rem;
@@ -223,12 +226,16 @@ const InputControllerPass = styled.div`
 `;
 
 const Account = () => {
+  const user = useSelector((state) => state.user.user);
+  const docs = useFirestore("users");
+  console.log(docs);
   const size = WindowSize();
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(openNav());
   };
   const [edit] = useState(false);
+
   return (
     <>
       <AccountHead>
@@ -251,27 +258,27 @@ const Account = () => {
             <ProfileInfos>
               <ProfileInfoDiv>
                 <ProfileInfoLabel>Full Name</ProfileInfoLabel>
-                <ProfileInfo>Yomi Aderayo</ProfileInfo>
+                <ProfileInfo>{user?.fullName}</ProfileInfo>
               </ProfileInfoDiv>
 
               <ProfileInfoDiv>
                 <ProfileInfoLabel>Email Address</ProfileInfoLabel>
-                <ProfileInfo>aderayomi23@gmail.com</ProfileInfo>
+                <ProfileInfo>{user?.email}</ProfileInfo>
               </ProfileInfoDiv>
 
               <ProfileInfoDiv>
                 <ProfileInfoLabel>Agency</ProfileInfoLabel>
-                <ProfileInfo>The Vusra Homes</ProfileInfo>
+                <ProfileInfo>{user?.agencyName}</ProfileInfo>
               </ProfileInfoDiv>
 
               <ProfileInfoDiv>
                 <ProfileInfoLabel>Phone Number</ProfileInfoLabel>
-                <ProfileInfo>+2348120641646</ProfileInfo>
+                <ProfileInfo>{user?.phone}</ProfileInfo>
               </ProfileInfoDiv>
 
               <ProfileInfoDiv>
                 <ProfileInfoLabel>Office Address</ProfileInfoLabel>
-                <ProfileInfo>aderayomi23@gmail.com</ProfileInfo>
+                <ProfileInfo>{user?.office}</ProfileInfo>
               </ProfileInfoDiv>
             </ProfileInfos>
           </ProfileDetails>
@@ -297,7 +304,7 @@ const Account = () => {
             <InputController>
               <InputLabel>Phone</InputLabel>
               <InputEdit>
-                <Input value="+2348120641646" />
+                <Input value={user?.phone} />
                 <EditOne>
                   <Edit style={{ fontSize: "1rem" }} /> Edit
                 </EditOne>
@@ -308,7 +315,7 @@ const Account = () => {
             <InputController>
               <InputLabel>WhatsApp</InputLabel>
               <InputEdit>
-                <Input value="+2348120641646" />
+                <Input value={user?.phone} />
                 <EditOne>
                   <Edit style={{ fontSize: "1rem" }} /> Edit
                 </EditOne>
@@ -319,7 +326,7 @@ const Account = () => {
             <InputController>
               <InputLabel>Email</InputLabel>
               <InputEdit>
-                <Input value="aderayomi23@gmail.com" type="email" />
+                <Input value={user?.email} type="email" />
                 <EditOne>
                   <Edit style={{ fontSize: "1rem" }} /> Edit
                 </EditOne>

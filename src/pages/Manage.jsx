@@ -8,6 +8,10 @@ import { openNav } from "../redux/navSlice";
 import WindowSize from "../hooks/windowSize";
 import { tablet, mobile } from "../responsive.js";
 import { Close } from "@mui/icons-material";
+import ProgressBar from "../components/ProgressBar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useStorage from "../hooks/useStorage";
 
 const style = {
   position: "absolute",
@@ -246,6 +250,13 @@ const FormButton = styled.button`
     width: "100%",
   })};
 `;
+
+const FormImageClick = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+`;
+const FormImage = styled.input``;
 const Search = () => {
   return (
     <>
@@ -255,6 +266,40 @@ const Search = () => {
 };
 
 const CreateAccomodation = ({ onClose }) => {
+  //form submission
+  const [description, setDescription] = useState("");
+  const [features, setFeatures] = useState("");
+  const [address, setAddress] = useState("");
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [renewal, setRenewal] = useState("");
+  const [userUid, setUserUid] = useState("");
+  const [file, setFile] = useState(null);
+
+  const types = ["image/png", "image/jpeg"];
+  //progress status
+
+  //form submit status
+  const [submit, setSubmit] = useState("");
+
+  const { url, progress } = useStorage(file);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const createAccomodationData = {
+      title,
+      address,
+      price,
+      renewal,
+      description,
+      features,
+      image: url,
+    };
+
+    setSubmit(createAccomodationData);
+    console.log(submit);
+  };
   return (
     <>
       <CreateHead>
@@ -268,27 +313,47 @@ const CreateAccomodation = ({ onClose }) => {
         <Form>
           <FormController>
             <FormLabel>Title</FormLabel>
-            <FormInput placeholder="e.g Single room at damico" type="text" />
+            <FormInput
+              placeholder="e.g Single room at damico"
+              type="text"
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </FormController>
 
           <FormController>
             <FormLabel>Address</FormLabel>
-            <FormInput placeholder="e.g Single room at damico" type="text" />
+            <FormInput
+              placeholder="e.g Single room at damico"
+              type="text"
+              onChange={(e) => setAddress(e.target.value)}
+            />
           </FormController>
 
           <FormController>
             <FormLabel>Price</FormLabel>
-            <FormInput placeholder="e.g Single room at damico" type="text" />
+            <FormInput
+              placeholder="e.g Single room at damico"
+              type="text"
+              onChange={(e) => setPrice(e.target.value)}
+            />
           </FormController>
 
           <FormController>
             <FormLabel>Renewal Period</FormLabel>
-            <FormInput placeholder="e.g Single room at damico" type="text" />
+            <FormInput
+              placeholder="e.g Single room at damico"
+              type="text"
+              onChange={(e) => setRenewal(e.target.value)}
+            />
           </FormController>
 
           <FormController>
             <FormLabel>Description</FormLabel>
-            <FormTextarea placeholder="e.g Single room at damico" type="text" />
+            <FormTextarea
+              placeholder="e.g Single room at damico"
+              type="text"
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </FormController>
 
           <FormController>
@@ -297,15 +362,55 @@ const CreateAccomodation = ({ onClose }) => {
               Separate multiple features by a comma e.g (Electricity, Parking
               Space, Running Water){" "}
             </FormSubLabel>
-            <FormInput placeholder="e.g Single room at damico" type="text" />
+            <FormInput
+              placeholder="e.g Single room at damico"
+              type="text"
+              onChange={(e) => setFeatures(e.target.value)}
+            />
           </FormController>
 
           <FormController>
             <FormLabel>Images</FormLabel>
-            <FormInput placeholder="e.g Single room at damico" type="text" />
+            <FormInput
+              placeholder={
+                file
+                  ? file.name
+                  : url
+                  ? "File has successfully been uploaded"
+                  : null
+              }
+              type="text"
+              disabled={true}
+            />
+            <FormImageClick>
+              <label style={{ cursor: "pointer", fontSize: "14px" }} for="fusk">
+                + Add Photo
+              </label>
+              <FormImage
+                style={{ display: "none" }}
+                id="fusk"
+                type="file"
+                className="custom-file-input"
+                onChange={(e) => {
+                  let selected = e.target.files[0];
+                  if (selected && types.includes(selected.type)) {
+                    setFile(selected);
+                  } else {
+                    setFile(null);
+                    toast(
+                      "Oops! You can only select an image with the type 'png' or 'jpeg'",
+                      { type: "error" }
+                    );
+                  }
+                }}
+              />
+            </FormImageClick>
+            {file && <ProgressBar file={file} setFile={setFile} />}
           </FormController>
 
-          <FormButton>Create Accomodation</FormButton>
+          <FormButton type="submit" onClick={handleSubmit}>
+            Create Accomodation
+          </FormButton>
         </Form>
       </CreateBody>
     </>
@@ -324,6 +429,8 @@ const Manage = () => {
   return (
     <>
       <Section>
+        <ToastContainer />
+
         <Head>
           <TitleMenu>
             {size.width < 1045 && (

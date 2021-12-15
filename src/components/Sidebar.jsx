@@ -99,6 +99,7 @@ const Logout = styled.div`
 `;
 
 const Sidebar = () => {
+  const user = useSelector((state) => state.user.user);
   const size = WindowSize();
   const open = useSelector((state) => state.navbar.open);
   const dispatch = useDispatch();
@@ -162,7 +163,7 @@ const Sidebar = () => {
 
         <SidebarFoot>
           <Span>Signed in as</Span>
-          <SpanName>Yomi Aderayo</SpanName>
+          <SpanName>{user?.fullName}</SpanName>
 
           <Logout>Logout</Logout>
         </SidebarFoot>

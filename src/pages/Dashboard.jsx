@@ -6,6 +6,9 @@ import Account from "./Account";
 import firebase from "firebase";
 import DashboardHome from "./DashboardHome";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { database } from "../config";
+import { dispatchUser } from "../redux/userSlice";
+import { useDispatch } from "react-redux";
 
 const Section = styled.section`
   background: #fcfcfc;
@@ -21,33 +24,57 @@ const Right = styled.div`
 `;
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const [authState, setAuthState] = useState("");
   const navigate = useNavigate();
-  console.log(authState);
+  const [userUid, setUserUid] = useState(null);
+  const [profilesCheck, setProfilesCheck] = useState(null);
+  //snapshots
+  const [profiles, setProfiles] = useState([]);
+  //spinner
+  const [loading, setLoading] = useState(true);
+
+  const [filterQuery, setFilterQuery] = useState("");
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (!user) {
-        setAuthState("Logged-out");
+        setAuthState(false);
       } else {
-        setAuthState("Logged-in");
+        setAuthState(true);
+        setUserUid(user.uid);
       }
     });
   }, []);
 
   useEffect(() => {
-    const getUser = firebase.auth().currentUser;
-    if (getUser !== null) {
-      getUser.providerData.forEach((profile) => {
-        console.log("Sign-in provider: " + profile.providerId);
-        console.log("  Provider-specific UID: " + profile.uid);
-        console.log("  Name: " + profile.displayName);
-        console.log("  Email: " + profile.email);
-        console.log("  Photo URL: " + profile.photoURL);
-      });
-    }
-    console.log(getUser);
-  }, []);
+    database.ref("users/" + userUid).on("value", (snapshot) => {
+      console.log(snapshot);
+    });
+  }, [userUid]);
+
+  useEffect(() => {
+    const getUser = async () => {
+      if (userUid) {
+        await database
+          .ref()
+          .child("users")
+          .child(userUid)
+          .get()
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              dispatch(dispatchUser(snapshot.val()));
+            } else {
+              console.log("No data available");
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    };
+    getUser();
+  }, [userUid, dispatch]);
 
   if (authState === "Logged-out") {
     return navigate("/");
