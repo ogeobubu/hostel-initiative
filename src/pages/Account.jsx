@@ -146,7 +146,7 @@ const TextareaButton = styled.div`
   })};
 `;
 const ContactInfoSection = styled.div`
-  background: #e5e5e5;
+  background: #fcfcfc;
 `;
 const EditButton = styled.button`
   cursor: pointer;

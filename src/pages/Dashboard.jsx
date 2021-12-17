@@ -8,6 +8,7 @@ import DashboardHome from "./DashboardHome";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { database } from "../config";
 import { dispatchUser } from "../redux/userSlice";
+import { dispatchAccomodations } from "../redux/accomodationsSlice";
 import { useDispatch } from "react-redux";
 
 const Section = styled.section`
@@ -48,9 +49,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    database.ref("users/" + userUid).on("value", (snapshot) => {
-      console.log(snapshot);
-    });
+    database.ref("users/" + userUid).on("value", (snapshot) => {});
   }, [userUid]);
 
   useEffect(() => {
@@ -74,6 +73,30 @@ const Dashboard = () => {
       }
     };
     getUser();
+  }, [userUid, dispatch]);
+
+  useEffect(() => {
+    const getAccomodationsForSpecificUser = async () => {
+      if (userUid) {
+        await database
+          .ref(`accomodations/${userUid}`)
+          .on("value", (snapshot) => {
+            if (snapshot.exists()) {
+              let returnArr = [];
+
+              snapshot.forEach((childSnapshot) => {
+                let item = childSnapshot.val();
+                returnArr.push(item);
+              });
+              console.log(returnArr);
+              dispatch(dispatchAccomodations(returnArr));
+            } else {
+              console.log("No data available");
+            }
+          });
+      }
+    };
+    getAccomodationsForSpecificUser();
   }, [userUid, dispatch]);
 
   if (authState === "Logged-out") {

@@ -12,7 +12,7 @@ const useFirestore = (collection) => {
 
       return () => unsub();
     });
-  });
+  }, [collection]);
 };
 
 export default useFirestore;

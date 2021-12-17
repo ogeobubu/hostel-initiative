@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Backdrop, Box, Modal, Fade } from "@mui/material";
 import deleteBtn from "../assets/fluent_delete-48-filled (1).png";
-import { Menu } from "@mui/icons-material";
+import { Menu, Close } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { openNav } from "../redux/navSlice";
 import WindowSize from "../hooks/windowSize";
 import { tablet, mobile } from "../responsive.js";
-import { Close } from "@mui/icons-material";
 import ProgressBar from "../components/ProgressBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStorage from "../hooks/useStorage";
+import firebase from "firebase";
+import { auth, database } from "../config";
+import CreateAccomodation from "../components/CreateAccomodation";
 
 const style = {
   position: "absolute",
@@ -150,269 +152,10 @@ const Tr = styled.tr`
 `;
 const Td = styled.td``;
 
-const CreateHead = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 25px;
-`;
-const CreateTitle = styled.p`
-  font-family: Lato;
-  font-style: normal;
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: 0.01em;
-  color: #854bff;
-`;
-const CreateBody = styled.div``;
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-const FormController = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  margin-bottom: 25px;
-`;
-const FormLabel = styled.label`
-  font-family: Lato;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 17px;
-  color: #8f8f8f;
-  margin-bottom: 6px;
-`;
-const FormInput = styled.input`
-  outline: none;
-  min-width: 693px;
-  flex: 1;
-  height: 49px;
-  background: #fcfcfc;
-  border: 1px solid #f9f9f9;
-  border-radius: 5px;
-  padding: 1rem;
-  ${tablet({
-    minWidth: "100%",
-  })};
-
-  &::placeholder {
-    font-family: Lato;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    color: #d5d5d5;
-  }
-`;
-const FormTextarea = styled.textarea`
-width: 693px;
-height: 153px;#FCFCFC;
-border: 1px solid #F9F9F9;
-border-radius: 5px;
-padding: 1rem;
-outline: none;
-${tablet({
-  width: "100%",
-})};
-`;
-const FormSubLabel = styled.span`
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 10px;
-  line-height: 12px;
-  color: #a8a8a8;
-`;
-const FormButton = styled.button`
-  outline: none;
-  cursor: pointer;
-  width: 693px;
-  height: 39px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #854bff;
-  border-radius: 5px;
-  margin-top: 48px;
-  border: none;
-  font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 17px;
-  color: #ffffff;
-
-  ${tablet({
-    width: "100%",
-  })};
-`;
-
-const FormImageClick = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
-`;
-const FormImage = styled.input``;
 const Search = () => {
   return (
     <>
       <SearchInput type="text" placeholder="Search" />
-    </>
-  );
-};
-
-const CreateAccomodation = ({ onClose }) => {
-  //form submission
-  const [description, setDescription] = useState("");
-  const [features, setFeatures] = useState("");
-  const [address, setAddress] = useState("");
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [renewal, setRenewal] = useState("");
-  const [userUid, setUserUid] = useState("");
-  const [file, setFile] = useState(null);
-
-  const types = ["image/png", "image/jpeg"];
-  //progress status
-
-  //form submit status
-  const [submit, setSubmit] = useState("");
-
-  const { url, progress } = useStorage(file);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const createAccomodationData = {
-      title,
-      address,
-      price,
-      renewal,
-      description,
-      features,
-      image: url,
-    };
-
-    setSubmit(createAccomodationData);
-    console.log(submit);
-  };
-  return (
-    <>
-      <CreateHead>
-        <CreateTitle>Create Accomodation</CreateTitle>
-        <Close
-          onClick={() => onClose()}
-          style={{ color: "#000", cursor: "pointer" }}
-        />
-      </CreateHead>
-      <CreateBody>
-        <Form>
-          <FormController>
-            <FormLabel>Title</FormLabel>
-            <FormInput
-              placeholder="e.g Single room at damico"
-              type="text"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </FormController>
-
-          <FormController>
-            <FormLabel>Address</FormLabel>
-            <FormInput
-              placeholder="e.g Single room at damico"
-              type="text"
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </FormController>
-
-          <FormController>
-            <FormLabel>Price</FormLabel>
-            <FormInput
-              placeholder="e.g Single room at damico"
-              type="text"
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </FormController>
-
-          <FormController>
-            <FormLabel>Renewal Period</FormLabel>
-            <FormInput
-              placeholder="e.g Single room at damico"
-              type="text"
-              onChange={(e) => setRenewal(e.target.value)}
-            />
-          </FormController>
-
-          <FormController>
-            <FormLabel>Description</FormLabel>
-            <FormTextarea
-              placeholder="e.g Single room at damico"
-              type="text"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </FormController>
-
-          <FormController>
-            <FormLabel>Features</FormLabel>
-            <FormSubLabel>
-              Separate multiple features by a comma e.g (Electricity, Parking
-              Space, Running Water){" "}
-            </FormSubLabel>
-            <FormInput
-              placeholder="e.g Single room at damico"
-              type="text"
-              onChange={(e) => setFeatures(e.target.value)}
-            />
-          </FormController>
-
-          <FormController>
-            <FormLabel>Images</FormLabel>
-            <FormInput
-              placeholder={
-                file
-                  ? file.name
-                  : url
-                  ? "File has successfully been uploaded"
-                  : null
-              }
-              type="text"
-              disabled={true}
-            />
-            <FormImageClick>
-              <label style={{ cursor: "pointer", fontSize: "14px" }} for="fusk">
-                + Add Photo
-              </label>
-              <FormImage
-                style={{ display: "none" }}
-                id="fusk"
-                type="file"
-                className="custom-file-input"
-                onChange={(e) => {
-                  let selected = e.target.files[0];
-                  if (selected && types.includes(selected.type)) {
-                    setFile(selected);
-                  } else {
-                    setFile(null);
-                    toast(
-                      "Oops! You can only select an image with the type 'png' or 'jpeg'",
-                      { type: "error" }
-                    );
-                  }
-                }}
-              />
-            </FormImageClick>
-            {file && <ProgressBar file={file} setFile={setFile} />}
-          </FormController>
-
-          <FormButton type="submit" onClick={handleSubmit}>
-            Create Accomodation
-          </FormButton>
-        </Form>
-      </CreateBody>
     </>
   );
 };
@@ -531,7 +274,10 @@ const Manage = () => {
               width: size.width > 800 ? 800 : size.width,
             }}
           >
-            <CreateAccomodation onClose={handleClose} />
+            <CreateAccomodation
+              titleCreate="Create Accomodation"
+              onClose={handleClose}
+            />
           </Box>
         </Fade>
       </Modal>

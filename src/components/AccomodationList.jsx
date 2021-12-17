@@ -7,6 +7,7 @@ import image2 from "../assets/image2.png";
 import image3 from "../assets/image3.png";
 import darkRight from "../assets/darkRight.png";
 import { mobile } from "../responsive.js";
+import { useSelector } from "react-redux";
 
 const Section = styled.section`
   margin-top: 40px;
@@ -43,6 +44,10 @@ const data = [
 ];
 
 const AccomodationList = () => {
+  const allAccomodations = useSelector(
+    (state) => state.accomodations.getAllAccomodations
+  );
+  console.log(allAccomodations);
   return (
     <>
       <Section>
